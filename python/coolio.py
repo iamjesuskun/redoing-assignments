@@ -54,18 +54,16 @@ def get_movie(title):
 def get_popcorn(people, group):
     if group == False:
         while True:
-            size = input("You want popcorn. What size Small, Medium or Large? (S/M/L)")
-            if size.lower() != "s" or size.lower() != "m" or size.lower() != "l":
-                continue
-            else:
+            size = input("You want popcorn. What size Small, Medium or Large? (S/M/L) ")
+            if size.lower() == "s" or size.lower() == "m" or size.lower() == "l":
                 return size.lower()
+            continue
     else:
         while True:
-            size = input("Person %d want popcorn. What size Small, Medium or Large? (S/M/L)".format(people))
-            if size.lower() != "s" or size.lower() != "m" or size.lower() != "l":
-                continue
-            else:
+            size = input("Person {} want popcorn. What size Small, Medium or Large? (S/M/L) ".format(people))
+            if size.lower() == "s" or size.lower() == "m" or size.lower() == "l":
                 return size.lower()
+            continue            
 
 def get_transaction(movie_time, popcorn, group):
     pass
@@ -116,8 +114,7 @@ def room_size(room):
                     else:
                         continue
                 else:
-                    break
-                
+                    break          
     while amount_of_people < 2:
         try_again = input("Sorry, you must have at least two customers for a group booking. Enter Y to try again or N to quit. ")  
         if try_again.lower() == "y":
@@ -134,19 +131,22 @@ def group():
         movie = input("What is the name of the movie you want to watch? ")
         movie = get_movie(movie)
         amount = room_size(movie[4])
-        popcorn = []
-        i = 0
-        while i < amount:
-            ask_popcorn = input(f"For person {str(i+1)}, would you like to order popcorn? Y?N")
-            if ask_popcorn.lower() == "y":
-                popcorn.append(get_popcorn(i+1, True))
-                i+=1
-            elif ask_popcorn.lower() == "n":
-                popcorn.append("N")
-                i+=1
-            else:
-                continue
-        break
+        if amount == False:
+            continue
+        else:
+            popcorn = []
+            i = 0
+            while i < amount:
+                ask_popcorn = input(f"For person {str(i+1)}, would you like to order popcorn? Y?N ")
+                if ask_popcorn.lower() == "y":
+                    popcorn.append(get_popcorn(i+1, True))
+                    i+=1
+                elif ask_popcorn.lower() == "n":
+                    popcorn.append("N")
+                    i+=1
+                else:
+                    continue
+            break
     return [movie[3],popcorn,True]
 
 
@@ -161,7 +161,8 @@ def main(ls):
         booking = book()
         get_transaction(booking[0],booking[1],booking[2])
     elif ls[1] == "--group":
-        group() 
+        booking = group() 
+        get_transaction(booking[0],booking[1],booking[2])
 
 if __name__ == "__main__":
     main(sys.argv)
